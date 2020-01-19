@@ -1,0 +1,38 @@
+-Sciagnij, zaimportuj projekt Faktury i zapoznaj sie z jego struktura
+
+-Faktura sklada sie z pozycji, na pozycji wykazuje sie towar, fakture mozna stworzyc
+oraz wydrukowac jej zawartosc.
+
+-Zwroc uwage na teoretycznie zupelnie redundantne dane typu nazwa towaru przepisywane do obiektu
+Pozycja - dlaczego warto to jednak zostawic w ten sposob, zamiast za kazdym razem siegac do 
+tych danych bezposrednio do obiektu Towar?
+
+-Faktura powinna miec mozliwosc ustalenia rabatu (parametr typu double). Rabat moze byc
+obliczany kwotowo lub procentowo. O tym, w jaki sposob jest obliczany rabat, decyduja obiekty
+klasy ObliczCenePoRabacieProcentowym i ObliczCenePoRabacieKwotowym, 
+spelniajace interfejs ObliczCenePoRabacie. Interfejs ObliczCenePoRabacie ma metode 
+obliczCenePoRabacie(double cena) zwracajacy cene po rabacie. Razem te trzy klasy tworza wzorzec STRATEGIA.
+Dodaj do Faktury referencje do metody obliczania rabatu (wykorzystaj interfejs). Na razie zainicjuj
+rabat w kodzie konstruktora i sprawdz, czy dziala.
+
+-Skad wziac konkretna metode obliczania rabatu? Najlepiej z Konfiguracji. Zaimplementuj
+klase Konfiguracja w oparciu o wzorzec SINGLETON. Konfiguracja powinna miec metode getObliczanieRabatu()
+zwracajaca odpowiedni rabat. Faktura w konstruktorze powinna odwolac sie do Konfiguracji i pobrac
+aktualna metode obliczania rabatu.
+
+- Interfejs uzytkownika niepotrzebnie ma dostep do Pozycji. 
+Zastosuj wzorzec FASADA implementujac klase Raporty, ktora bedzie miala metode drukujFakture,
+przenies tam kod wypiszFakture, usun import Pozycji z klasy Ui. Teraz Ui powinna importowac
+wylacznie Fakture i Towar (Brak ,,profesjonalnego'' magazynu zmusza niestety Ui do importowania 
+rowniez Towaru).
+
+- Zastosuj wzorzec ADAPTER do przystosowania zewnetrznej klasy LosowyRabat 
+do hierarchii STRATEGII rabatow. Klasa LosowyRabat
+posiada metode losujRabat() zwracajaca double (w przedziale 0-0.3). ADAPTER powinien
+wynik wykorzystac jako rabat procentowy.
+Klasa LosowyRabat dostarczona jest w postaci pliku JAR (nie ma dostepnego zrodla).
+
+* Zaimplementuj liste towarow i wykorzystaj ja przy tworzeniu 
+faktury. lista nie powinna zezwalac na wstawienie dwoch towarow o tej samej nazwie.
+do stworzenia listy wykorzystaj HashMap - tworzac agregat typu ,,klucz-wartosc'', gdzie
+kluczem bedzie nazwa towaru a wartoscia obiekt
